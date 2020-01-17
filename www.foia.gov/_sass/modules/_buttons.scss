@@ -1,44 +1,54 @@
 .usa-button {
   font-weight: $font-semibold;
+
   &.usa-button-primary {
     background-color: $color-primary-darkest;
+
     &:hover,
     &:focus {
       background-color: $color-primary-alt-darker;
       color: $color-white;
     }
+
     &:visited {
-      color: $color-white!important;
+      color: $color-white !important;
     }
   }
+
   &.usa-button-primary-alt {
     background-color: $color-primary-alt-light;
     color: $color-primary-darkest;
+
     &:visited {
       background-color: $color-primary-alt-light;
     }
+
     &:hover,
     &:visited:hover {
-      background-color: $color-primary-alt!important;
+      background-color: $color-primary-alt !important;
     }
+
     &:active,
     &:focus,
     &:visited:active,
     &:visited:focus {
-      background-color: $color-primary-alt!important;
+      background-color: $color-primary-alt !important;
       color: $color-primary-darkest;
     }
-  }
-  &.usa-button-outline {
-    background-color: transparent;
-    box-shadow: inset 0 0 0 2px $color-primary-alt-light;
-    color: $color-primary-darkest;
-    &:hover,
-    &:visited:hover {
-      background-color: $color-primary-alt-light;
-      color: $color-primary-darkest;
+
+    &.usa-button-outline {
+      background-color: transparent;
       box-shadow: inset 0 0 0 2px $color-primary-alt-light;
+      color: $color-primary-darkest;
+
+      &:hover,
+      &:visited:hover {
+        background-color: $color-primary-alt-light;
+        color: $color-primary-darkest;
+        box-shadow: inset 0 0 0 2px $color-primary-alt-light;
+      }
     }
+
     &:active,
     &:focus,
     &:visited:active,
@@ -48,6 +58,7 @@
       box-shadow: inset 0 0 0 2px $color-primary-alt-light;
     }
   }
+
   &.usa-button-small {
     font-weight: $font-normal;
   }
@@ -55,4 +66,20 @@
 
 form [type=submit] {
   margin: $space-4x 0;
+}
+
+.close-button {
+  width: 4.4rem;
+  height: 4.4rem;
+  background-image: url($icon-close-button);
+  background-repeat: no-repeat;
+  border-radius: 100px;
+  background-color: transparent;
+  background-size: 3rem;
+  background-position: center center;
+}
+
+.close-button:hover,
+.close-button:active {
+  background-color: transparent;
 }
