@@ -2,8 +2,8 @@
  * USWDS variable overrides
  * ********************************/
 $h1-font-size: 3.5rem; // heading 1
-$h2-font-size:  3rem; // subhead 1
-$h3-font-size:  2rem; // heading 2
+$h2-font-size: 3rem;   // subhead 1
+$h3-font-size: 2rem;   // heading 2
 $h4-font-size: 2.2rem; // subhead 2
 $h5-font-size: 1.7rem; // menu/label items
 $base-font-size: 1.7rem;
@@ -30,8 +30,8 @@ $medium-screen: 600px;
 $large-screen: 1201px;
 
 // Relative font and image file paths
-$font-path: '/assets/fonts' !default;
-$image-path: '/assets/img' !default;
+$font-path:   '/assets/fonts' !default;
+$image-path:  '/assets/img' !default;
 
 /***********************************
  * New variable declarations

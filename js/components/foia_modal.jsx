@@ -26,7 +26,7 @@ class FoiaModal extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.openModal} className="usa-button usa-button-primary-alt usa-button-outline" type="button">Open Modal</button>
+        <button onClick={this.openModal} className="usa-button usa-button-outline" type="button">Open Modal</button>
         <Modal
           isOpen={this.state.modalIsOpen}
           // onAfterOpen={this.afterOpenModal}
