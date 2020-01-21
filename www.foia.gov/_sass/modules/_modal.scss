@@ -9,15 +9,17 @@
     right: 0px;
     bottom: 0px;
     background-color: rgba(0, 0, 0, 0.25);
+    z-index: 9999;
 }
 
 .modal {
     position: absolute;
     display: flex;
-    top: 50%;
+    top: 45%;
     left: 50%;
     right: auto;
     bottom: auto;
+    min-width: 40vw;
     max-width: 80vw;
     max-height: 80vh;
     margin-right: -50%;
@@ -30,7 +32,7 @@
 .modal__inner {
     overflow: auto;
     padding: 2rem 3rem;
-    max-width: 60rem;
+    flex-basis: 100%;
 }
 
 .modal__close {
@@ -52,11 +54,16 @@
     z-index: -1;
 }
 
-.modal__title {
+.modal h1,
+.modal h2,
+.modal h3,
+.modal h4,
+.modal h5,
+.modal h6 {
     margin-top: 0;
     text-align: center;
 }
 
-.modal__footer {
-    text-align: center;
+.modal__content > .form-group {
+    margin-top: 0;
 }
