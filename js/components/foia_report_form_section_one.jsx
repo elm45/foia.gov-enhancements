@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FoiaTooltip from './foia_tooltip';
+import FoiaModal from './foia_modal';
 
 /**
  * README!: The assumption of this file is that it is a 'good enough'
@@ -20,7 +21,40 @@ class FoiaReportFormSectionOne extends React.Component {
               <label htmlFor="data_type"><strong>Agency or Component Name</strong></label>
               <span className="twitter-typeahead usa-search-bg-light usa-reset-width">
                 <input type="text" id="search-field-big" name="search" className=" usa-reset-width" autoComplete="off" spellCheck="false" />
-                <button className="usa-button usa-button-outline usa-button-small" type="submit" href="#">Select Agency Components</button>
+                <FoiaModal
+                triggerText="Select Agency Components"
+                ariaLabel="Select Agency Components"
+                modalContent={
+                  <div className="form-group">
+                    <div className="usa-grid">
+                      <h3 className="sans">Select Agencies or Components</h3>
+                      <fieldset className="usa-fieldset-inputs">
+                        <ul className="usa-unstyled-list usa-grid checkbox-list">
+                          <li className="usa-width-one-third">
+                            <input id="Agency-1" type="checkbox" name="Agency-1" value="Agency-1" />
+                            <label htmlFor="Agency-1">Agency 1</label>
+                          </li>
+                          <li className="usa-width-one-third">
+                            <input id="Agency-2" type="checkbox" name="Agency-2" value="Agency-2" />
+                            <label htmlFor="Agency-2">Agency 2</label>
+                          </li>
+                          <li className="usa-width-one-third">
+                            <input id="Agency-3" type="checkbox" name="Agency-3" value="Agency-3" />
+                            <label htmlFor="Agency-3">Agency 3</label>
+                          </li>
+                        </ul>
+                        <div className="form-group form-group_footer">
+                          <ul className="inline-list">
+                            <li><a href="#">Select All</a></li>
+                            <li><a href="#">Select None</a></li>
+                          </ul>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                }
+                modalSubmitButton={<button className="usa-button usa-button-primary-alt">Submit</button>}
+              /> {/* End FoiaModal */}
               </span>
             </div>
             <div className="form-group field use-dark-icons">
