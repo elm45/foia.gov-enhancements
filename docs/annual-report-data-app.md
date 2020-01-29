@@ -187,3 +187,16 @@ Props:
   handleChange={this.handleChange}
 />
 ```
+
+
+#### Checbox Selector Links
+
+Props include:
+* `componentID`: Used to select the container (by ID) of the descendant checkboxes to select all / select none.
+
+Example use:
+ ```
+import CheckboxSelectorLinks from './checkbox_selector_links';
+..
+<CheckboxSelectorLinks componentID='checkbox-group-fiscal-year' />
+```
