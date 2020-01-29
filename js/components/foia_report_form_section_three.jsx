@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FoiaTooltip from './foia_tooltip';
+import CheckboxSelectorLinks from './checkbox_selector_links';
 
 /**
  * README!: The assumption of this file is that it is a 'good enough'
@@ -16,7 +17,7 @@ class FoiaReportFormSectionThree extends Component {
               3. Select Fiscal Years
               <FoiaTooltip text={'<p>Select a Fiscal Year to view the data for that year. You may select multiple years, or you may view all years of available data.</p>'} />
             </legend>
-            <fieldset className="usa-fieldset-inputs">
+            <fieldset id="checkbox-group-fiscal-year" className="usa-fieldset-inputs">
               <legend className="usa-sr-only">Select Fiscal Years</legend>
               <ul className="usa-unstyled-list usa-grid checkbox-list">
                 <li className="usa-width-one-sixth">
@@ -68,12 +69,7 @@ class FoiaReportFormSectionThree extends Component {
                   <label htmlFor="2008">2008</label>
                 </li>
               </ul>
-              <div className="form-group">
-                <ul className="inline-list">
-                  <li><a href="#">Select All</a></li>
-                  <li><a href="#">Select None</a></li>
-                </ul>
-              </div>
+              <CheckboxSelectorLinks componentID='checkbox-group-fiscal-year' />
             </fieldset>
           </fieldset>
         </div>
