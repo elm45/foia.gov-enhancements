@@ -5,6 +5,7 @@ import FoiaReportFormSectionTwo from '../components/foia_report_form_section_two
 import FoiaReportFormSectionThree from '../components/foia_report_form_section_three';
 import FoiaReportDataSubmit from '../components/foia_report_submit';
 import FoiaReportResultsTable from '../components/foia_report_results_table';
+import FoiaReportDataSubmit from '../components/foia_report_submit';
 
 import annualReportDataFormStore from '../stores/annual_report_data_form';
 import agencyComponentStore from '../stores/agency_component';
@@ -119,6 +120,7 @@ class AnnualReportDataPage extends Component {
           />
         </form>
         <FoiaReportResultsTable />
+        <FoiaReportDataSubmit />
       </div>
     );
   }

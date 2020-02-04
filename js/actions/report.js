@@ -230,7 +230,7 @@ export const reportActions = {
       type: types.ANNUAL_REPORT_DATA_RECEIVE,
       annualReports,
     });
-
+    // console.log(annualReports);
     return Promise.resolve(annualReports);
   },
 
