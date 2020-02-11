@@ -22,20 +22,18 @@ class FoiaReportDataSubmit extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (!this.formIsValid()) {
-    } else {
+    reportActions.returnFieldValidationStateOnSubmit();
+    if (this.formIsValid()) {
       reportActions.fetchAnnualReportData(this.props.selectedDataTypes);
     }
-    reportActions.returnFieldValidationStateOnSubmit();
   }
 
   handleDownloadCSV(event) {
-    if (!this.formIsValid()) {
-      event.preventDefault();
-    } else {
+    event.preventDefault();
+    reportActions.returnFieldValidationStateOnSubmit();
+    if (this.formIsValid()) {
       // print the CSV
     }
-    reportActions.returnFieldValidationStateOnSubmit();
   }
 
   render() {

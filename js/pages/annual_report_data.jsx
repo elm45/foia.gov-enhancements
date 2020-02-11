@@ -5,7 +5,6 @@ import FoiaReportFormSectionTwo from '../components/foia_report_form_section_two
 import FoiaReportFormSectionThree from '../components/foia_report_form_section_three';
 import FoiaReportDataSubmit from '../components/foia_report_submit';
 import FoiaReportResultsTable from '../components/foia_report_results_table';
-import FoiaReportDataSubmit from '../components/foia_report_submit';
 
 import annualReportDataFormStore from '../stores/annual_report_data_form';
 import agencyComponentStore from '../stores/agency_component';
@@ -137,12 +136,10 @@ class AnnualReportDataPage extends Component {
             fiscalYearsDisplayError={fiscalYearsDisplayError}
           />
           <FoiaReportDataSubmit
+            selectedDataTypes={selectedDataTypes}
             agencyComponentIsValid={agencyComponentIsValid}
             dataTypesIsValid={dataTypesIsValid}
             fiscalYearsIsValid={fiscalYearsIsValid}
-          />
-          <FoiaReportDataSubmit
-            selectedDataTypes={selectedDataTypes}
           />
         </form>
         <FoiaReportResultsTable />

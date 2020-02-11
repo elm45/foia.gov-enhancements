@@ -103,46 +103,11 @@ class FoiaAnnualReportRequestBuilder extends JsonApi {
       ? List(sections)
       : List([]);
 
-<<<<<<< HEAD
     const includes = FoiaAnnualReportRequestBuilder.getSectionIncludes(dataTypes);
     const fields = FoiaAnnualReportRequestBuilder.getSectionFields(dataTypes, withOverallData);
 
     this.request.includeMultiple(includes);
     this.includeFields(fields);
-=======
-    console.log(sectionNames);
-
-    let { dataTypes } = annualReportDataTypesStore.getState();
-    console.log(dataTypes);
-
-
-    dataTypes = dataTypes.filter((group, groupName) => (
-      sectionNames.includes(groupName)
-    ));
-
-    console.log(dataTypes);
-
-    const includes = dataTypes.reduce((entities, section) => {
-      if (!Object.prototype.hasOwnProperty.call(section, 'includes')) {
-        return entities;
-      }
-
-      return entities.push(...section.includes);
-    }, List([]));
-
-    const iterator = includes.values();
-    let include = iterator.next();
-    while (!include.done) {
-      this.request.include(include.value);
-      const path = include.value.split('.');
-      if (path.length === 1) {
-        this.request.fields('annual_foia_report_data', path[0]);
-      } else {
-        this.request.fields(path[0], path[1]);
-      }
-      include = iterator.next();
-    }
->>>>>>> FOIA-316: Adds shell for report submit component.
 
     return this;
   }
