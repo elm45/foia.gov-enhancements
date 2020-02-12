@@ -21,6 +21,17 @@ class FoiaReportFormSectionTwo extends Component {
       dataTypeDisplayError,
     } = this.props;
 
+    const dataTypesCount = this.props.selectedDataTypes.length;
+    const addAnotherDataType = [];
+    if (dataTypesCount < 3) {
+      addAnotherDataType.push(
+        <AddLink
+          eventType={types.ANNUAL_REPORT_DATA_TYPE_FILTER_ADD_GROUP}
+          text="Add Another Data Type"
+        />
+      )
+    }
+
     return (
       <div>
         <div className="form-group">
@@ -43,10 +54,8 @@ class FoiaReportFormSectionTwo extends Component {
                 dataTypeDisplayError={dataTypeDisplayError}
               />))}
 
-            <AddLink
-              eventType={types.ANNUAL_REPORT_DATA_TYPE_FILTER_ADD_GROUP}
-              text="Add Another Data Type"
-            />
+            {addAnotherDataType}
+
           </fieldset>
         </div>
       </div>
