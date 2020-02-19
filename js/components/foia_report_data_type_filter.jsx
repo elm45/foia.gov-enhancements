@@ -39,8 +39,6 @@ class FoiaReportDataTypeFilter extends Component {
       selectedDataType: selection,
       previousDataType: this.props.selectedDataType,
     });
-
-    reportActions.validateDataTypeField(selection);
   }
 
   handleFilterFieldUpdate(e) {
