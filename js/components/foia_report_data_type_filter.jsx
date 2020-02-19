@@ -8,7 +8,7 @@ import FoiaModal from './foia_modal';
 import FoiaTooltip from './foia_tooltip';
 import dispatcher from '../util/dispatcher';
 import RemoveLink from './remove_link';
-import { reportActions, types } from '../actions/report';
+import { types } from '../actions/report';
 
 class FoiaReportDataTypeFilter extends Component {
   constructor(props) {
