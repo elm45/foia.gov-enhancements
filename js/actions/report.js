@@ -1,13 +1,12 @@
 import assert from 'assert';
 import axios from 'axios';
 import settings from 'settings';
-import { List } from 'immutable';
 
 import dispatcher from '../util/dispatcher';
 import jsonapi from '../util/json_api';
 import localapi from '../util/local_api';
 import date from '../util/current_date';
-import reportRequestBuilder from '../util/foia_annual_report_request_builder';
+import { FoiaAnnualReportRequestBuilder } from '../util/foia_annual_report_request_builder';
 
 // Action types to identify an action
 export const types = {
@@ -35,13 +34,14 @@ export const types = {
   SELECTED_AGENCY_COMPONENT_TEMPORARY_UPDATE_ALL: 'SELECTED_AGENCY_COMPONENT_TEMPORARY_UPDATE_ALL',
   SELECTED_AGENCY_COMPONENTS_DISCARD_TEMPORARY: 'SELECTED_AGENCY_COMPONENTS_DISCARD_TEMPORARY',
   SELECTED_AGENCY_COMPONENTS_MERGE_TEMPORARY: 'SELECTED_AGENCY_COMPONENTS_MERGE_TEMPORARY',
+  SELECTED_AGENCIES_TOGGLE_SELECT_ALL: 'SELECTED_AGENCIES_TOGGLE_SELECT_ALL',
   ANNUAL_REPORT_AGENCY_COMPONENT_REMOVE: 'ANNUAL_REPORT_AGENCY_COMPONENT_REMOVE',
   ANNUAL_REPORT_DATA_TYPE_FILTER_UPDATE: 'ANNUAL_REPORT_DATA_TYPE_FILTER_UPDATE',
   ANNUAL_REPORT_DATA_TYPE_FILTER_SUBMIT: 'ANNUAL_REPORT_DATA_TYPE_FILTER_SUBMIT',
   ANNUAL_REPORT_DATA_TYPE_FILTER_RESET: 'ANNUAL_REPORT_DATA_TYPE_FILTER_RESET',
   ANNUAL_REPORT_DATA_TYPE_FILTER_REMOVE: 'ANNUAL_REPORT_DATA_TYPE_FILTER_REMOVE',
   VALIDATE_FORM: 'VALIDATE_FORM',
-  GET_TABLE_DATA_TYPES: 'GET_TABLE_DATA_TYPES',
+  REPORT_SUBMISSION_TYPE: 'REPORT_SUBMISSION_TYPE',
 };
 
 // Action creators, to dispatch actions
@@ -197,24 +197,10 @@ export const reportActions = {
     return Promise.resolve();
   },
 
-  getTableDataTypes(dataTypeOptions) {
-    dispatcher.dispatch({
-      type: types.GET_TABLE_DATA_TYPES,
-      dataTypeOptions,
-    });
-
-    return Promise.resolve();
-  },
-
   /**
-   * Get reports from the api, only including fields from the named sections.
+   * Makes a base report api request with the correct events dispatched
+   * while allowing the request to be modified before sending.
    *
-   * @param {List<string> | Array<string>} sections
-   *   A list of the section names to retrieve, which will be transformed into
-   *   a map of includes and fields on the jsonapi request.
-   * @param {Boolean} agencyOverall
-   *   A boolean to determine if the request should include the agency overall
-   *   fields if the section.
    * @param {Function | null} modifier
    *   An optional function that will get the JsonapiParams request object.
    *   This function allows modifications to the request such as adding filters
@@ -225,16 +211,15 @@ export const reportActions = {
    * @see js/stores/annual_report_data_types.js
    * @see www.foia.gov/api/annual-report-form/report_data_map.json
    */
-  fetchAnnualReportData(sections = List(), agencyOverall = true, modifier = null) {
+  fetchAnnualReportData(modifier = null) {
     dispatcher.dispatch({
       type: types.ANNUAL_REPORT_DATA_FETCH,
     });
 
     // The default limit could be updated in the
     // modifier function if it needs to be.
-    let builder = reportRequestBuilder;
+    let builder = new FoiaAnnualReportRequestBuilder();
     builder.request.limit(5);
-    builder = builder.includeSections(sections, agencyOverall);
 
     if (modifier && typeof modifier === 'function') {
       builder = modifier(builder);

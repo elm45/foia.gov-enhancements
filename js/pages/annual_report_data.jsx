@@ -38,6 +38,7 @@ class AnnualReportDataPage extends Component {
     } = agencyComponentStore.getState();
 
     const {
+      allAgenciesSelected,
       selectedAgencies,
       selectedDataTypes,
       selectedFiscalYears,
@@ -47,7 +48,7 @@ class AnnualReportDataPage extends Component {
       fiscalYearsDisplayError,
       dataTypeDisplayError,
       agencyComponentDisplayError,
-      tableDataTypes,
+      submissionAction,
     } = annualReportDataFormStore.getState();
 
     const {
@@ -57,6 +58,8 @@ class AnnualReportDataPage extends Component {
 
     const {
       reports,
+      reportTables,
+      reportDataComplete,
     } = annualReportStore.getState();
 
     return {
@@ -64,6 +67,7 @@ class AnnualReportDataPage extends Component {
       agencyComponents,
       agencyFinderDataComplete,
       agencyFinderDataProgress,
+      allAgenciesSelected,
       fiscalYears,
       selectedFiscalYears,
       fiscalYearsIsValid,
@@ -72,13 +76,20 @@ class AnnualReportDataPage extends Component {
       fiscalYearsDisplayError,
       dataTypeDisplayError,
       agencyComponentDisplayError,
-      tableDataTypes,
+      submissionAction,
       selectedAgencies,
       dataTypes,
       dataTypeOptions,
       selectedDataTypes,
       reports,
+      reportTables,
+      reportDataComplete,
     };
+  }
+
+  constructor() {
+    super();
+    this.reportRefs = {};
   }
 
   componentDidMount() {
@@ -96,9 +107,9 @@ class AnnualReportDataPage extends Component {
 
   triggerCSV(event) {
     event.preventDefault();
-
-    this.state.tableDataTypes.forEach((selectedDataType) => {
-      this.reportTable.downloadCSV(selectedDataType);
+    const reports = Object.values(this.reportRefs);
+    reports.forEach((reportTable) => {
+      reportTable.downloadCSV();
     });
   }
 
@@ -108,6 +119,7 @@ class AnnualReportDataPage extends Component {
       agencyComponents,
       agencyFinderDataComplete,
       agencyFinderDataProgress,
+      allAgenciesSelected,
       selectedAgencies,
       dataTypes,
       dataTypeOptions,
@@ -120,49 +132,90 @@ class AnnualReportDataPage extends Component {
       fiscalYearsDisplayError,
       dataTypeDisplayError,
       agencyComponentDisplayError,
+      reportTables,
+      submissionAction,
+      reportDataComplete,
     } = this.state;
+    const [...reportTableEntries] = reportTables.values();
+return (
+  <div className="annual-report-data-page usa-grid" ref={(ref) => { this.element = ref; }}>
 
-    return (
-      <div className="annual-report-data-page usa-grid" ref={(ref) => { this.element = ref; }}>
-        <h1>Create a Report</h1>
-        <form>
-          <FoiaReportFormSectionOne
-            agencies={agencies}
-            agencyComponents={agencyComponents}
-            agencyFinderDataComplete={agencyFinderDataComplete}
-            agencyFinderDataProgress={agencyFinderDataProgress}
-            selectedAgencies={selectedAgencies}
-            agencyComponentDisplayError={agencyComponentDisplayError}
-          />
-          <FoiaReportFormSectionTwo
-            dataTypes={dataTypes}
-            dataTypeOptions={dataTypeOptions}
-            selectedDataTypes={selectedDataTypes}
-            dataTypeDisplayError={dataTypeDisplayError}
-          />
-          <FoiaReportFormSectionThree
-            fiscalYears={fiscalYears}
-            selectedFiscalYears={selectedFiscalYears}
-            fiscalYearsDisplayError={fiscalYearsDisplayError}
-          />
-          <FoiaReportDataSubmit
-            selectedDataTypes={selectedDataTypes}
-            agencyComponentIsValid={agencyComponentIsValid}
-            dataTypesIsValid={dataTypesIsValid}
-            fiscalYearsIsValid={fiscalYearsIsValid}
-            onClick={this.triggerCSV.bind(this)}
-          />
-        </form>
-
-        <div className="results-toolbar">
-          <button type="button" className="usa-button usa-button-big usa-button-primary-alt">Print</button>
-          <button onClick={this.triggerCSV.bind(this)} type="button" className="usa-button usa-button-big usa-button-primary-alt">Download CSV</button>
+      {submissionAction === false || submissionAction === 'download' ?
+        <div>
+          <h1>Create a Report</h1>
+          <form >
+            <FoiaReportFormSectionOne
+              agencies={agencies}
+              agencyComponents={agencyComponents}
+              agencyFinderDataComplete={agencyFinderDataComplete}
+              agencyFinderDataProgress={agencyFinderDataProgress}
+              selectedAgencies={selectedAgencies}
+              agencyComponentDisplayError={agencyComponentDisplayError}
+              allAgenciesSelected={allAgenciesSelected}
+            />
+            <FoiaReportFormSectionTwo
+              dataTypes={dataTypes}
+              dataTypeOptions={dataTypeOptions}
+              selectedDataTypes={selectedDataTypes}
+              dataTypeDisplayError={dataTypeDisplayError}
+            />
+            <FoiaReportFormSectionThree
+              fiscalYears={fiscalYears}
+              selectedFiscalYears={selectedFiscalYears}
+              fiscalYearsDisplayError={fiscalYearsDisplayError}
+            />
+            <FoiaReportDataSubmit
+              allAgenciesSelected={allAgenciesSelected}
+              selectedDataTypes={selectedDataTypes}
+              selectedFiscalYears={selectedFiscalYears}
+              agencyComponentIsValid={agencyComponentIsValid}
+              dataTypesIsValid={dataTypesIsValid}
+              fiscalYearsIsValid={fiscalYearsIsValid}
+              onClick={this.triggerCSV.bind(this)}
+            />
+          </form>
         </div>
-        <FoiaReportResultsTable
-          ref={(reportTable) => { this.reportTable = reportTable; }}
-        />
-      </div>
-    );
+        : null
+      }
+      {submissionAction === 'view' ?
+        <div>
+          <h1>View Reports</h1>
+          <div className="results-toolbar">
+            <button
+              type="button"
+              className="usa-button usa-button-big usa-button-primary-alt"
+            >Print
+            </button>
+            <button
+              onClick={this.triggerCSV.bind(this)}
+              type="button"
+              className="usa-button usa-button-big usa-button-primary-alt"
+            >Download
+              CSV
+            </button>
+          </div>
+        </div>
+        : null }
+      {(submissionAction === 'view' || submissionAction === 'download') && !reportDataComplete &&
+      <div>Loading...</div>
+      }
+      {reportDataComplete &&
+      <div>
+        {
+          reportTableEntries.map(table => (
+            <FoiaReportResultsTable
+              key={`report-${table.id}`}
+              ref={(ref) => { this.reportRefs[table.id] = ref; }}
+              tableHeader={table.header}
+              tableData={table.data}
+              tableColumns={table.columns}
+              displayMode={submissionAction}
+            />
+          ))
+        }
+      </div> }
+  </div>
+);
   }
 }
 

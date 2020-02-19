@@ -1,4 +1,5 @@
 import { Store } from 'flux/utils';
+import { List } from 'immutable';
 
 import dispatcher from '../util/dispatcher';
 import { types } from '../actions/report';
@@ -10,6 +11,7 @@ class AnnualReportDataFormStore extends Store {
     super(_dispatcher);
     this.state = {
       selectedAgencies: [{ index: 0 }],
+      allAgenciesSelected: false,
       selectedDataTypes: [{ index: 0, id: '' }],
       selectedFiscalYears: [],
       fiscalYearsIsValid: false,
@@ -18,11 +20,34 @@ class AnnualReportDataFormStore extends Store {
       fiscalYearsDisplayError: false,
       dataTypeDisplayError: false,
       agencyComponentDisplayError: false,
+      submissionAction: false,
     };
   }
 
   getState() {
     return this.state;
+  }
+
+  buildSelectedAgencies() {
+    if (!this.state.allAgenciesSelected) {
+      return [...this.state.selectedAgencies];
+    }
+
+    // If all agencies are selected, get an array of all agencies
+    // where the only component is an overall component.
+    let { agencies } = agencyComponentStore.getState();
+    agencies = agencies.map(agency => (
+      Object.assign({}, agency.toJS(), {
+        components: List([{
+          abbreviation: 'Agency Overall',
+          id: `overall:${agency.id}`,
+          isOverall: true,
+          selected: true,
+        }]),
+      })
+    ));
+
+    return agencies.toArray();
   }
 
   __onDispatch(payload) {
@@ -78,6 +103,24 @@ class AnnualReportDataFormStore extends Store {
         break;
       }
 
+      case types.SELECTED_AGENCIES_TOGGLE_SELECT_ALL: {
+        const { allAgenciesSelected } = Object.assign({}, this.getState());
+        let agencyComponentIsValid = true;
+        if (!allAgenciesSelected) {
+          const selectedAgencies = [...this.state.selectedAgencies];
+          agencyComponentIsValid = selectedAgencies
+            .filter(selection => selection.error || false)
+            .length === 0;
+        }
+
+        Object.assign(this.state, {
+          allAgenciesSelected: !allAgenciesSelected,
+          agencyComponentIsValid,
+        });
+        this.__emitChange();
+        break;
+      }
+
       case types.SELECTED_AGENCIES_APPEND_BLANK: {
         const selectedAgencies = [...this.state.selectedAgencies];
         selectedAgencies.push({
@@ -125,12 +168,14 @@ class AnnualReportDataFormStore extends Store {
         if (selectedDataType.id !== '') {
           selectedDataType.fields = annualReportDataTypesStore
             .getFieldsForDataType(selectedDataType.id);
+          selectedDataType.heading = annualReportDataTypesStore
+            .getPrettyLabelForDataType(selectedDataType.id);
 
           selectedDataType.filterOptions = selectedDataType
             .fields
             .filter(opt => opt.filter)
             .map(opt => ({
-              value: opt.id,
+              value: opt.filter === true ? opt.id : opt.filter,
               label: opt.label,
             }));
           // Add a default filter definition to make removing a submitted filter
@@ -169,24 +214,11 @@ class AnnualReportDataFormStore extends Store {
         break;
       }
 
-      case types.GET_TABLE_DATA_TYPES: {
-        const { dataTypeOptions } = payload;
-        const tableDataTypes = [];
-        this.state.selectedDataTypes.forEach((selectedDataType) => {
-          if (selectedDataType.id.length > 0) {
-            const selectedID = selectedDataType.id;
-            dataTypeOptions.forEach((dataTypeOption) => {
-              const optionValue = dataTypeOption.value;
-              if (selectedID === optionValue) {
-                let tableDataType = dataTypeOption.label;
-                tableDataType = tableDataType.replace(/[^a-zA-Z ]/g, '').trim().replace(/[^A-Z0-9]+/ig, '-').toLowerCase();
-                tableDataTypes.push(tableDataType);
-              }
-            });
-          }
+      case types.REPORT_SUBMISSION_TYPE: {
+        const { submissionAction } = payload;
+        Object.assign(this.state, {
+          submissionAction,
         });
-
-        Object.assign(this.state, { tableDataTypes });
         this.__emitChange();
         break;
       }

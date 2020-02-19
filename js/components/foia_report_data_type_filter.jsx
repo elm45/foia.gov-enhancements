@@ -40,7 +40,7 @@ class FoiaReportDataTypeFilter extends Component {
       previousDataType: this.props.selectedDataType,
     });
 
-    reportActions.getTableDataTypes([...this.props.dataTypeOptions]);
+    reportActions.validateDataTypeField(selection);
   }
 
   handleFilterFieldUpdate(e) {

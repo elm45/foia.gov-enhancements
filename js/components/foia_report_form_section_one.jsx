@@ -16,33 +16,48 @@ class FoiaReportFormSectionOne extends Component {
       agencyFinderDataProgress,
       selectedAgencies,
       agencyComponentDisplayError,
+      allAgenciesSelected,
     } = this.props;
 
     const fieldsDisplayed = this.props.selectedAgencies.length;
 
     return (
-      <div className="form-group">
-        <fieldset>
-          <legend className="foia-header-blue-line--h2">
-            1. Select Agencies or Components
-            <FoiaTooltip text={'<p>Select an agency or agencies to view their data. You may also select specific components of an agency (such as the FBI, a component of the Department of Justice), or you may view data for all government agencies.</p>'} />
-          </legend>
-          {selectedAgencies.map((selected, index) => (
-            <ReportAgencyComponentFilter
-              key={index}
-              agencies={agencies}
-              agencyComponents={agencyComponents}
-              agencyFinderDataComplete={agencyFinderDataComplete}
-              agencyFinderDataProgress={agencyFinderDataProgress}
-              selectedAgency={selected}
-              agencyComponentDisplayError={agencyComponentDisplayError}
-              fieldsDisplayed={fieldsDisplayed}
-            />))}
-          <AddLink
-            eventType={types.SELECTED_AGENCIES_APPEND_BLANK}
-            text="Add Another Agency or Component"
-          />
-        </fieldset>
+      <div>
+        <div className="form-group">
+          <fieldset>
+            <legend className="foia-header-blue-line--h2">
+              1. Select Agencies or Components
+              <FoiaTooltip text={'<p>Select an agency or agencies to view their data. You may also select specific components of an agency (such as the FBI, a component of the Department of Justice), or you may view data for all government agencies.</p>'} />
+            </legend>
+            {selectedAgencies.map((selected, index) => (
+              <ReportAgencyComponentFilter
+                key={index} // eslint-disable-line react/no-array-index-key
+                agencies={agencies}
+                agencyComponents={agencyComponents}
+                agencyFinderDataComplete={agencyFinderDataComplete}
+                agencyFinderDataProgress={agencyFinderDataProgress}
+                selectedAgency={selected}
+                agencyComponentDisplayError={agencyComponentDisplayError}
+                fieldsDisplayed={fieldsDisplayed}
+                isDisabled={this.props.allAgenciesSelected}
+              />))}
+            <div className="form-group_footer-links">
+              <div className="form-group_footer-links_left">
+                {!allAgenciesSelected && <AddLink
+                  eventType={types.SELECTED_AGENCIES_APPEND_BLANK}
+                  text="Add Another Agency or Component"
+                />}
+              </div>
+              <div className="form-group_footer-links_right">
+                <AddLink
+                  eventType={types.SELECTED_AGENCIES_TOGGLE_SELECT_ALL}
+                  text={!this.props.allAgenciesSelected ? 'Select All Agencies' : 'Unselect All Agencies'}
+                  icon={false}
+                />
+              </div>
+            </div>
+          </fieldset>
+        </div>
       </div>
     );
   }
@@ -55,12 +70,14 @@ FoiaReportFormSectionOne.propTypes = {
   agencyFinderDataComplete: PropTypes.bool.isRequired,
   agencyFinderDataProgress: PropTypes.number,
   agencyComponentDisplayError: PropTypes.bool.isRequired,
+  allAgenciesSelected: PropTypes.bool,
 };
 
 FoiaReportFormSectionOne.defaultProps = {
   agencies: new Map(),
   agencyComponents: new List(),
   agencyFinderDataProgress: 0,
+  allAgenciesSelected: false,
   selectedAgencies: [{ index: 0 }],
 };
 

@@ -111,6 +111,7 @@ class ReportAgencyComponentFilter extends Component {
       selectedAgency,
       agencyComponentDisplayError,
       fieldsDisplayed,
+      isDisabled,
     } = this.props;
 
     const agencyIsSelected = (this.props.selectedAgency.id !== 0 && this.props.selectedAgency.type === 'agency') || false;
@@ -125,12 +126,13 @@ class ReportAgencyComponentFilter extends Component {
     ) : null;
 
     return (
-      <div className="usa-search usa-search-big">
+      <div className={'usa-search usa-search-big'.concat(isDisabled ? ' usa-disabled' : '')}>
         <ReportAgencyComponentTypeahead
           agencies={agencies}
           agencyComponents={agencyComponents}
           agencyFinderDataProgress={agencyFinderDataProgress}
           agencyFinderDataComplete={agencyFinderDataComplete}
+          isDisabled={isDisabled}
           selectedAgency={selectedAgency}
           agencyComponentDisplayError={agencyComponentDisplayError}
         />
@@ -157,6 +159,7 @@ ReportAgencyComponentFilter.propTypes = {
   agencyComponents: PropTypes.instanceOf(List),
   agencyFinderDataComplete: PropTypes.bool.isRequired,
   agencyFinderDataProgress: PropTypes.number,
+  isDisabled: PropTypes.bool,
   selectedAgency: PropTypes.object,
   agencyComponentDisplayError: PropTypes.bool.isRequired,
   fieldsDisplayed: PropTypes.number.isRequired,
@@ -166,6 +169,7 @@ ReportAgencyComponentFilter.defaultProps = {
   agencies: new Map(),
   agencyComponents: new List(),
   agencyFinderDataProgress: 0,
+  isDisabled: false,
   selectedAgency: { index: 0 },
 };
 
