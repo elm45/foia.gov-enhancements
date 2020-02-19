@@ -21,7 +21,7 @@ class FoiaReportDataSubmit extends Component {
   }
 
   handleSubmit(event) {
-    reportActions.returnFieldValidationStateOnSubmit();
+    reportActions.validateForm();
     if (this.formIsValid()) {
       reportActions.fetchAnnualReportData(this.props.selectedDataTypes);
     } else {
@@ -31,7 +31,7 @@ class FoiaReportDataSubmit extends Component {
 
   handleDownloadCSV(event) {
     event.preventDefault();
-    reportActions.returnFieldValidationStateOnSubmit();
+    reportActions.validateForm();
     if (this.formIsValid()) {
       this.props.onClick(event);
     }

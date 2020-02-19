@@ -224,8 +224,6 @@ class ReportAgencyComponentTypeahead extends Component {
       selectedAgency: selection,
       previousAgency: this.props.selectedAgency,
     });
-
-    reportActions.validateAgencyComponentField(selection);
   }
 
   render() {
@@ -236,6 +234,10 @@ class ReportAgencyComponentTypeahead extends Component {
     const wrapperClasses = ['form-group'];
     if (agencyComponentDisplayError) {
       wrapperClasses.push('usa-input-error');
+    }
+    // Needed for remove link feature so fields removed out of order display the correct value.
+    if (this.props.selectedAgency.id) {
+      $(this.typeaheadInput).typeahead('val', this.props.selectedAgency.title);
     }
 
     return (

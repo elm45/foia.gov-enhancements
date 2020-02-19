@@ -27,6 +27,7 @@ class FoiaReportFormSectionTwo extends Component {
         />
       )
     }
+    const fieldsDisplayed = this.props.selectedDataTypes.length;
 
     return (
       <div>
@@ -48,6 +49,7 @@ class FoiaReportFormSectionTwo extends Component {
                 dataTypeOptions={dataTypeOptions}
                 selectedDataType={selected}
                 dataTypeDisplayError={dataTypeDisplayError}
+                fieldsDisplayed={fieldsDisplayed}
               />))}
 
             {addAnotherDataType}

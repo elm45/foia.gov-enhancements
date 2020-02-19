@@ -7,6 +7,7 @@ import USWDSSelectWidget from './uswds_select_widget';
 import FoiaModal from './foia_modal';
 import FoiaTooltip from './foia_tooltip';
 import dispatcher from '../util/dispatcher';
+import RemoveLink from './remove_link';
 import { reportActions, types } from '../actions/report';
 
 class FoiaReportDataTypeFilter extends Component {
@@ -39,7 +40,6 @@ class FoiaReportDataTypeFilter extends Component {
       previousDataType: this.props.selectedDataType,
     });
 
-    reportActions.validateDataTypeField(selection);
     reportActions.getTableDataTypes([...this.props.dataTypeOptions]);
   }
 
@@ -147,7 +147,7 @@ class FoiaReportDataTypeFilter extends Component {
   }
 
   render() {
-    const { dataTypeDisplayError } = this.props;
+    const { dataTypeDisplayError, fieldsDisplayed } = this.props;
     const dataTypeSelected = (this.props.selectedDataType.id !== '' && this.props.selectedDataType.id !== 'group_iv_exemption_3_statutes') || false;
     const filterSubmitted = Object.hasOwnProperty.call(this.props.selectedDataType, 'filter') && this.props.selectedDataType.filter.applied;
     const removeButton = filterSubmitted ? (<a
@@ -158,6 +158,13 @@ class FoiaReportDataTypeFilter extends Component {
     const modalText = filterSubmitted ? 'Edit Results Filter' : 'Filter Results';
     const fieldsetClasses = dataTypeDisplayError ? 'usa-fieldset-inputs usa-input-error' : 'usa-fieldset-inputs';
 
+    const removeDataFieldButton = fieldsDisplayed > 1 ? (
+        <RemoveLink
+          eventType={types.ANNUAL_REPORT_DATA_TYPE_FIELD_REMOVE}
+          selection={this.props.selectedDataType}
+          text="Remove"
+        />
+      ) : null;
     return (
       <div>
         <USWDSSelectWidget
@@ -172,18 +179,21 @@ class FoiaReportDataTypeFilter extends Component {
         {dataTypeDisplayError &&
         <p className="usa-input-error-message">A Data Type is required.</p>
         }
-        {dataTypeSelected &&
-          <FoiaModal
-            ref={(modal) => { this.filterModal = modal; }}
-            triggerText={modalText}
-            ariaLabel={modalText}
-            modalContent={this.buildModalContent()}
-            onSubmit={this.handleModalSubmit}
-            onClose={this.handleFilterReset}
-            canSubmit={this.modalCanSubmit}
-            modalAdditionalLink={removeButton}
-          />
-        }
+        <div className="report-field-actions">
+          {dataTypeSelected &&
+            <FoiaModal
+              ref={(modal) => { this.filterModal = modal; }}
+              triggerText={modalText}
+              ariaLabel={modalText}
+              modalContent={this.buildModalContent()}
+              onSubmit={this.handleModalSubmit}
+              onClose={this.handleFilterReset}
+              canSubmit={this.modalCanSubmit}
+              modalAdditionalLink={removeButton}
+            />
+          }
+          {removeDataFieldButton}
+        </div>
       </div>
     );
   }
@@ -193,6 +203,7 @@ FoiaReportDataTypeFilter.propTypes = {
   dataTypeOptions: PropTypes.instanceOf(List),
   selectedDataType: PropTypes.object,
   dataTypeDisplayError: PropTypes.bool.isRequired,
+  fieldsDisplayed: PropTypes.number.isRequired,
 };
 
 FoiaReportDataTypeFilter.defaultProps = {
