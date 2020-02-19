@@ -213,8 +213,7 @@ class AnnualReportDataFormStore extends Store {
         selectedAgencies.forEach((selectedAgency) => {
           if (selectedAgency.id) {
             validityCheckSelectedAgencies.push(true);
-          }
-          else {
+          } else {
             validityCheckSelectedAgencies.push(false);
           }
         });
@@ -224,8 +223,7 @@ class AnnualReportDataFormStore extends Store {
         dataTypes.forEach((dataType) => {
           if (dataType.id.length > 0) {
             validityCheckDataTypes.push(true);
-          }
-          else {
+          } else {
             validityCheckDataTypes.push(false);
           }
         });

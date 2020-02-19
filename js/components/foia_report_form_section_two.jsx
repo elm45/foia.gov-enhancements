@@ -24,8 +24,8 @@ class FoiaReportFormSectionTwo extends Component {
         <AddLink
           eventType={types.ANNUAL_REPORT_DATA_TYPE_FILTER_ADD_GROUP}
           text="Add Another Data Type"
-        />
-      )
+        />,
+      );
     }
     const fieldsDisplayed = this.props.selectedDataTypes.length;
 

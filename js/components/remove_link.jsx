@@ -28,7 +28,7 @@ class RemoveLink extends Component {
   }
 }
 
- RemoveLink.propTypes = {
+RemoveLink.propTypes = {
   eventType: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   selection: PropTypes.object.isRequired,

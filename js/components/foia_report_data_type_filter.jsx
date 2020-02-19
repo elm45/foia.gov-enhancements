@@ -159,12 +159,12 @@ class FoiaReportDataTypeFilter extends Component {
     const fieldsetClasses = dataTypeDisplayError ? 'usa-fieldset-inputs usa-input-error' : 'usa-fieldset-inputs';
 
     const removeDataFieldButton = fieldsDisplayed > 1 ? (
-        <RemoveLink
-          eventType={types.ANNUAL_REPORT_DATA_TYPE_FIELD_REMOVE}
-          selection={this.props.selectedDataType}
-          text="Remove"
-        />
-      ) : null;
+      <RemoveLink
+        eventType={types.ANNUAL_REPORT_DATA_TYPE_FIELD_REMOVE}
+        selection={this.props.selectedDataType}
+        text="Remove"
+      />
+    ) : null;
     return (
       <div>
         <USWDSSelectWidget
