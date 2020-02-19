@@ -35,14 +35,6 @@ class FoiaReportDataSubmit extends Component {
     }
   }
 
-  handleDownloadCSV(event) {
-    event.preventDefault();
-    reportActions.validateForm();
-    if (this.formIsValid()) {
-      this.props.onClick(event);
-    }
-  }
-
   makeApiRequests() {
     reportActions.fetchAnnualReportData((builder) => {
       const selectedAgencies = annualReportDataFormStore.buildSelectedAgencies();
