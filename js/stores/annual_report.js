@@ -8,7 +8,12 @@ import FoiaAnnualReportFilterUtilities from '../util/foia_annual_report_filter_u
 
 // Function to output button in headers.
 function headingAsButton(cell) {
-  return `<button class="unstyled-button"> ${cell.getValue()} </button>`;
+  return `<button class="unstyled-button tabulator-col-title" aria-hidden="true">${cell.getValue()}</button><div class="tabulator-col-title visually-hidden">${cell.getValue()}</div>`;
+}
+
+function cellWithAria(cell) {
+  const columnHeader = cell.getColumn().getDefinition().title;
+  return `<span aria-label="${columnHeader}: ${cell.getValue()}">${cell.getValue()}</span>`;
 }
 
 class AnnualReportStore extends Store {
@@ -194,18 +199,21 @@ class AnnualReportStore extends Store {
           {
             title: 'Agency',
             titleFormatter: headingAsButton,
+            formatter: cellWithAria,
             field: 'field_agency',
             align: 'center',
           },
           {
             title: 'Component',
             titleFormatter: headingAsButton,
+            formatter: cellWithAria,
             field: 'field_agency_component',
             align: 'center',
           },
           {
             title: 'Fiscal Year',
             titleFormatter: headingAsButton,
+            formatter: cellWithAria,
             field: 'field_foia_annual_report_yr',
             align: 'center',
           },
@@ -222,6 +230,7 @@ class AnnualReportStore extends Store {
                 {
                   title: item.label,
                   titleFormatter: headingAsButton,
+                  formatter: cellWithAria,
                   field: item.id,
                   align: 'center',
                 }));
