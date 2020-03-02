@@ -179,9 +179,6 @@ class AnnualReportStore extends Store {
       }
 
       case types.ANNUAL_REPORT_DATA_COMPLETE: {
-        // Resets focus to skip nav so tabbing doesn't default to footer before results load.
-        document.getElementById('skipnav').focus();
-
         // If there are multiple data types requested, separate requests will be
         // made for each data type.  Avoid building the report tables until all
         // of the data type requests have finished processing.
