@@ -123,6 +123,12 @@ $footerActiveColor:#d00 !default; //footer bottom active text color
 					text-overflow: ellipsis;
 					vertical-align:bottom;
 
+					// IE Overrides.
+					@media all and (-ms-high-contrast:none) {
+						// IE doesn't support the `outline-offset` property used on the header button focus so we add additional spacing here so outline is visible.
+						padding: .4rem;
+					}
+
 					//element to hold title editor
 					.tabulator-title-editor{
 						box-sizing: border-box;
@@ -206,6 +212,12 @@ $footerActiveColor:#d00 !default; //footer bottom active text color
 					background-size: 1rem;
 					min-height: 5.6rem;
 
+					// IE Overrides.
+					@media all and (-ms-high-contrast:none) {
+						// IE background-size property handles differently in IE.
+						background-size: 1.3rem 1.3rem;
+					}
+
         }
 
 				&[aria-sort="none"]{
@@ -244,9 +256,9 @@ $footerActiveColor:#d00 !default; //footer bottom active text color
 					&:focus {
 						outline-offset: -.3rem;
 					}
+
 				}
 			}
-
 
 			&.tabulator-col-vertical{
 				.tabulator-col-content{
