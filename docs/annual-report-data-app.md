@@ -75,9 +75,9 @@ Used in:
 #### Modal
 
 Props include:
-* `triggerText` The visible text in the button that triggers the modal.
-* `ariaLabel` The aria label for the modal.
-* `modalContent` The content that goes inside the modal.
+* `triggerText`: The visible text in the button that triggers the modal.
+* `ariaLabel`: The aria label for the modal.
+* `modalContent`: The content that goes inside the modal.
 * `modalAdditionalLink`: Adds an additional, optional link next to the modal's buttons.
 * `canSubmit`: Passes a validation function that returns a boolean and disables the submit button if false.
 * `onSubmit`: The callback function which will be called by the `onSubmit` event.
@@ -306,11 +306,11 @@ Used in:
 #### Foia Report Data Submit
 
 Props include
-  `selectedDataTypes`: An array of the currently selected DataTypes.
-  `fiscalYearsIsValid`: A boolean value indicating whether the Fiscal Years field is valid.
-  `dataTypesIsValid`: A boolean value indicating whether the Data Type field is valid.
-  `agencyComponentIsValid`:  A boolean value indicating whether the Agency Component field is valid.
-  `history`: An object that contains the browser history.
+* `selectedDataTypes`: An array of the currently selected DataTypes.
+* `fiscalYearsIsValid`: A boolean value indicating whether the Fiscal Years field is valid.
+* `dataTypesIsValid`: A boolean value indicating whether the Data Type field is valid.
+* `agencyComponentIsValid`:  A boolean value indicating whether the Agency Component field is valid.
+* `history`: An object that contains the browser history.
 
 Example use:
 
