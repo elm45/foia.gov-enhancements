@@ -1,10 +1,11 @@
 import assert from 'assert';
+import axios from 'axios';
+import settings from 'settings';
 
 import dispatcher from '../util/dispatcher';
 import jsonapi from '../util/json_api';
 import localapi from '../util/local_api';
 import requestapi from '../util/request_api';
-
 
 // Action types to identify an action
 export const types = {
@@ -19,6 +20,8 @@ export const types = {
   REQUEST_FORM_SUBMIT_PROGRESS: 'REQUEST_FORM_SUBMIT_PROGRESS',
   REQUEST_FORM_SECTIONS_FETCH: 'REQUEST_FORM_SECTIONS_FETCH',
   REQUEST_FORM_SECTIONS_RECEIVE: 'REQUEST_FORM_SECTIONS_RECEIVE',
+  REPORT_DATA_TYPE_UPDATE: 'REPORT_DATA_TYPE_UPDATE',
+  REPORT_DATA_TYPE_FILTER_ADD_GROUP: 'REPORT_DATA_TYPE_FILTER_ADD_GROUP',
 };
 
 // Action creators, to dispatch actions
@@ -29,7 +32,7 @@ export const requestActions = {
     });
 
     const referenceFields = includeReferenceFields || {
-      agency_component: ['title', 'abbreviation', 'agency'],
+      agency_component: ['title', 'abbreviation', 'agency', 'status'],
       agency: ['name', 'abbreviation', 'description', 'category'],
       'agency.category': ['name'],
     };
@@ -43,6 +46,7 @@ export const requestActions = {
     });
 
     return request
+      .filter('status', 'status', 1)
       .limit(50) // Maximum allowed by drupal
       .paginate('/agency_components', requestActions.receiveAgencyFinderData)
       .then(requestActions.completeAgencyFinderData);
